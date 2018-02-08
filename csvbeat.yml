@@ -6,15 +6,17 @@ csvbeat:
   # Defines how often an event is sent to the output
   period: 1m
   state_file_path: ${STATE_FILE_PATH:""}
+  state_file_name: ${STATE_FILE_NAME:""}
   state_file_storage_type: ${STATE_FILE_STORAGE_TYPE}
   aws_access_key: ${AWS_ACCESS_KEY}
   aws_secret_access_key: ${AWS_SECRET_ACCESS_KEY}
   aws_s3_bucket_name: ${AWS_BUCKET_NAME}
   aws_region: ${AWS_REGION:us-east-1}
   file_prefix: ${FILE_PREFIX:""}
-  timestamp_template: ${TIMESTAMP_TEMPLATE}
+  timestamp_template: '{{.datetime}}'
   timestamp_format: ${TIMESTAMP_FORMAT}
   event_type_column: ${EVENT_COLUMN}
+  batch_size: ${BATCH_SIZE:500}
 #================================ General =====================================
 
 # The name of the shipper that publishes the network data. It can be used to group
@@ -39,6 +41,16 @@ csvbeat:
 output.elasticsearch:
   # Array of hosts to connect to.
   hosts: ${ES_HOSTS}
+  index: ${INDEX_NAME}
+  template.name: "whosting*"
+
+  template.path: "${path.config}/csvbeat.template.json"
+
+  ssl.certificate_authorities: ${CA_CERT}
+
+  ssl.certificate: ${CLIENT_CERT}
+
+  ssl.key: ${CLIENT_KEY}
 
   # Optional protocol and basic auth credentials.
   #protocol: "https"
